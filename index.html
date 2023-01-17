@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>character sheet</title>
+    <script>
+    function deSelect (mod) {
+        if (mod == 1) {
+            document.getElementById("disadvantage").checked = false;
+        } else {
+            document.getElementById("advantage").checked = false;
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="character">
+        <div class="basicInfo">
+            <input id="name" type="text" placeholder="Nome">
+            <br>
+            <input id="age" type="text" placeholder="Idade">
+            <input id="ocupation" type="text" placeholder="Ocupação">
+            <div>
+                <input type="checkbox" id="advantage" onclick="deSelect(1)">
+                <p>vantagem</p>
+                <input type="checkbox" id="disadvantage" onclick="deSelect(2)">
+                <p>desvantagem</p>
+        </div>
+        </div>
+        <div class="stats">
+            <div class="centerer">
+                <h3 id="hp">hp: </h3>
+                <div class="bars">
+                    <div id="hpBar">
+                        <p id="hpText">10/10</p>
+                    </div>
+                </div>
+            </div>
+           
+            <br>
+            <div class="centerer"><h3 id="stamina">estamina: </h3>
+                <div class="bars">
+                    <div id="staminaBar">
+                        <p id="staminaText">10/10</p>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <input type="text" id="strength">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+            <br>
+            <input type="text" id="dexterity">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+            <br>
+            <input type="text" id="inteligence">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+            <br>
+            <input type="text" id="charisma">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+            <br>
+            <input type="text" id="perception">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+            <br>
+            <input type="text" id="resistance">
+            <button>+</button>
+            <button>-</button>
+            <button>🎲</button>
+        </div>
+    </div>
+    <script>
+        const str = document.getElementById("strength")
+        const dex = document.getElementById("dexterity")
+        const int = document.getElementById("inteligence")
+        const chr = document.getElementById("charisma")
+        const per = document.getElementById("perception")
+        const res = document.getElementById("resistance")
+        
+        const hp = document.getElementById("hpBar")
+        var maxHp = parseInt(10 + 5 / (parseInt(str.value) + parseInt(res.value)))
+        var currHp = maxHp
+
+        const sta = document.getElementById("staminaBar")
+
+
+        function saveStats () {
+            document.cookie = "str=" + str.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC" 
+            document.cookie = "dex=" + dex.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC" 
+            document.cookie = "int=" + int.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC" 
+            document.cookie = "chr=" + chr.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC" 
+            document.cookie = "per=" + per.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC" 
+            document.cookie = "res=" + res.value + "; expires=Thu, 1 Jan 2040 12:00:00 UTC"
+            maxHp = parseInt(10 + (parseInt(str.value) + parseInt(res.value)) / 5)
+            document.cookie = "maxHp=" + maxHp + "; expires=Thu, 1 Jan 2040 12:00:00 UTC"
+        }
+
+        function getCookie(cname) {
+            let name = cname + "="; 
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function changeBars(which, x) {
+            if (which == "hp") {
+                currHp += x 
+
+                return currHp
+            }
+        }
+
+        function loadStats () {
+            str.value = getCookie("str")
+            dex.value = getCookie("dex")
+            int.value = getCookie("int")
+            chr.value = getCookie("chr")
+            per.value = getCookie("per")
+            res.value = getCookie("res")
+            maxHp = getCookie("maxHp")
+            
+        }
+
+    </script>
+    <button id="save" onclick="saveStats()">Salvar</button>
+    <button id="load" onclick="loadStats()">Carregar</button>
+</body>
+</html>
